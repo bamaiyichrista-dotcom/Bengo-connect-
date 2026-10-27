@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#075e54">
+  <title>Bengo Connect</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      color: #222;
+    }
+    header {
+      background: #075e54;
+      color: white;
+      padding: 18px 16px;
+      font-size: 25px;
+      font-weight: bold;
+    }
+    .subtitle { font-size: 13px; margin-top: 5px; }
+    .container { max-width: 600px; margin: auto; padding: 12px; }
+    .card {
+      background: white;
+      padding: 15px;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px #ccc;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 5px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    button {
+      background: #087f5b;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .post-head { font-weight: bold; margin-bottom: 10px; }
+    .post-text { white-space: pre-wrap; margin: 12px 0; }
+    .actions { display: flex; gap: 10px; }
+    .actions button { background: #e8f5e9; color: #075e54; }
+    .notice { color: #666; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header>
+    Bengo Connect
+    <div class="subtitle">Connect with friends. Share your world.</div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h3>Create a post</h3>
+      <input id="username" placeholder="Your name">
+      <textarea id="message" rows="3" placeholder="What's happening?"></textarea>
+      <button onclick="addPost()">Share post</button>
+    </section>
+
+    <section id="feed">
+      <article class="card">
+        <div class="post-head">Bengo Connect 👋</div>
+        <div class="post-text">
+          Welcome! Your new social community starts here.
+        </div>
+        <div class="actions">
+          <button onclick="likePost(this)">👍 Like 0</button>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    function likePost(button) {
+      const count = Number(button.dataset.count || 0) + 1;
+      button.dataset.count = count;
+      button.textContent = "👍 Like " + count;
+    }
+
+    function addPost() {
+      const name = document.getElementById("username").value.trim();
+      const message = document.getElementById("message").value.trim();
+
+      if (!name || !message) {
+        alert("Please enter your name and a message.");
+        return;
+      }
+
+      const card = document.createElement("article");
+      card.className = "card";
+
+      const heading = document.createElement("div");
+      heading.className = "post-head";
+      heading.textContent = name;
+
+      const text = document.createElement("div");
+      text.className = "post-text";
+      text.textContent = message;
+
+      const actions = document.createElement("div");
+      actions.className = "actions";
+
+      const like = document.createElement("button");
+      like.textContent = "👍 Like 0";
+      like.dataset.count = "0";
+      like.onclick = function() { likePost(like); };
+
+      actions.appendChild(like);
+      card.append(heading, text, actions);
+      document.getElementById("feed").prepend(card);
+      document.getElementById("message").value = "";
+    }
+  </script>
+</body>
+</html>
